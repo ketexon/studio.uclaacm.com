@@ -1,8 +1,8 @@
 import { defineConfig } from "tinacms";
 
-const host = process.env.URL || process.env.HOST || ""
-
 import { isLocal } from "./isLocal";
+
+const host = process.env.URL || process.env.HOST || isLocal ? "http://localhost:3000" : ""
 
 const root = "content/"
 
