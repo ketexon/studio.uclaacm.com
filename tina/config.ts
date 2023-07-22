@@ -10,20 +10,22 @@ const config = defineConfig({
   contentApiUrlOverride: `${host}/api/gql`,
   admin: {
     auth: {
-      useLocalAuth: process.env.TINA_PUBLIC_IS_LOCAL === "true",
-
-      customAuth: true,
-      authenticate: async () => {
-        window.location.assign("/api/auth/login?returnTo=/admin/");
-      },
-      getUser: async () => {
-        return fetch("/api/auth/me").then(res => res.json())
-          .then(user => (user["https://studio.uclaacm.com/roles"] || []).includes("Admin") ? user : false)
-          .catch(e => false);
-      },
-      logout: async () => {
-        window.location.assign(`/api/auth/logout?returnTo=/admin/`);
-      },
+      ...isLocal
+        ? { useLocalAuth: true }
+        : {
+          customAuth: true,
+          authenticate: async () => {
+            window.location.assign("/api/auth/login?returnTo=/admin/");
+          },
+          getUser: async () => {
+            return fetch("/api/auth/me").then(res => res.json())
+              .then(user => (user["https://studio.uclaacm.com/roles"] || []).includes("Admin") ? user : false)
+              .catch(e => false);
+          },
+          logout: async () => {
+            window.location.assign(`/api/auth/logout?returnTo=/admin/`);
+          },
+        }
     },
   },
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,
@@ -141,7 +143,7 @@ const config = defineConfig({
             ]
           },
           {
-            type: "string",
+            type: "rich-text",
             label: "Body",
             name: "body",
             isBody: true,
