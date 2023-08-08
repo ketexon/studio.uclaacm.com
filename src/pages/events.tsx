@@ -18,7 +18,7 @@ import Divider from '@mui/material/Divider';
 type EventProps = {};
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fcfcfc',
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: 'center',
@@ -58,6 +58,7 @@ function getFirstDayOfMonth(curDate: Date): Date {
 
 export default function Events({ }: EventProps) {
     const classes = useStyles();
+    const [dateColor, setDateColor] = useState("#fcfcfc");
     //return <div>Hello</div>;
     /*React.useEffect(() => { console.log("hi") })
     const [start, setStart] = useState(new Date());
@@ -140,7 +141,14 @@ export default function Events({ }: EventProps) {
         let lastSunDate = getLastSunday(getFirstDayOfMonth(new Date()));
         let currDate = new Date(lastSunDate.getFullYear(), lastSunDate.getMonth(),
             lastSunDate.getDate() + index);
-        return <div>{currDate.getDate()}</div>;
+        let today = new Date();
+        let color = "fcfcfc";
+        if (currDate.getMonth() !== today.getMonth())
+            color = "#d9d9d9";
+        return <Item elevation={0}
+            sx={{
+                color: { color }
+            }}>{<div>{currDate.getDate()}</div>}</Item>;
     };
     return (
         <Container maxWidth="lg">
@@ -160,7 +168,6 @@ export default function Events({ }: EventProps) {
             </Grid > */}
             <Container className={classes.shadowContainer}>
                 <Typography variant="h2" style={{ textAlign: 'center' }}>{getCurMonth() + " " + getCurYear()}</Typography>
-                <Divider variant="middle" />
                 <Grid container spacing={1} columns={14}>
                     <Grid xs={2} >
                         <Item sx={{
@@ -208,10 +215,7 @@ export default function Events({ }: EventProps) {
                 <Grid container spacing={1} columns={14}>
                     {Array.from({ length: numRows * numCols }).map((_, i) => (
                         <Grid key={i} xs={2}>
-                            <Item elevation={0}
-                                sx={{
-                                    //color: 'success.main',
-                                }}>{renderCell(i)}</Item>
+                            {renderCell(i)}
                         </Grid>
                     ))}
                 </Grid >
