@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-
+// if ReactNode, add this
+// import { ReactNode } from 'react';
 const pageVariantsFadeLeftToRight = {
   initial: { opacity: 0, x: "-100vw" },
   in: { opacity: 1, x: 0 },
@@ -67,7 +68,7 @@ const pageTransitionEase = {
   duration: 0.8
 }
 
-const PageTransitionDefault = ({ children }) => (
+const TransitionDefault = ({ children }) => (
   <motion.div
     initial="initial"
     animate="in"
@@ -79,18 +80,56 @@ const PageTransitionDefault = ({ children }) => (
   </motion.div>
 );
 
+// if ReactNode, change to this
+/*const Transition = ({ children }: { children: ReactNode }) => {
+    return (
+      <motion.div
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={transitionVariants}
+        transition={{ duration: 0.5 }}
+      >
+        {children}
+      </motion.div>
+    );
+  };
+  
+  export default Transition;
+*/
 
 /* in the content section of the app */
 /*
-import PageTransition from './PageTransitionDefault';
+ex1.
+import PageTransition from './TransitionDefault';
 
 function App() {
   return (
-    <PageTransitionDefault>
+    <TransitionDefault>
       <YourComponent />
-    </PageTransitionDefault>
+    </TransitionDefault>
   );
 }
 
 export default App;
+
+ex2. (ReactNode version)
+import { AnimatePresence } from 'framer-motion';
+
+function App() {
+  return (
+    <Router>
+      <AnimatePresence mode="wait">
+        <Routes>
+          <Route path="/" element={<Transition><Home /></Transition>} />
+          <Route path="/about" element={<Transition><About /></Transition>} />
+          <Route path="/contact" element={<Transition><Contact /></Transition>} />
+        </Routes>
+      </AnimatePresence>
+    </Router>
+  );
+}
+
+export default App;
+
 */
